@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/js/dependencies/sails.io.js"></script>
+</head>
+<body>
+<form action ="user-create" method ="post">
+<h3>User Register</h3>
+<table>
+	<tr>
+		<td>NAME</td>
+		<td><input type="text" id="name" name="name" size="30"></td>
+	</tr>
+	<tr>
+		<td>PASSWORD</td>
+		<td><input type="text" id="password" name="password" size="30"></td>
+	</tr>
+	<tr>
+		<td>EMAIL</td>
+		<td><input type="text" id="email" name="email" size="30"></td>
+	</tr>
+	<tr><td><button type="submit" id="button" >Register</button></td></tr>
+</table>
+</form>
+<h3>Registered Users</h3>
+<table id="registeredList">
+	
+	<tr><td width="50px">ID</td>
+	<td width="50px">NAME</td>
+	<td width="50px">EMAIL</td></tr>
+	<% for(var i=0; i < users.length; i++) { 
+		var user = users[i]; %>
+		<tr>
+			<td width="50px"><%= user.id %></td>
+			<td width="50px"><%= user.name %></td>
+			<td width="50px"><%= user.email %></td>
+			<td width="50px"><a href="/user/edit/<%= user.id %>">Edit</a></td>
+			<td width="50px"><a href="/user/delete/<%= user.id %>">Delete</a></td>
+		</tr> 
+	<% }  %>
+</table>
+
+</body>
+
+<script>
+console.log("version 1");
+io.socket.get("/user-watch", function(data) {
+
+});
+
+io.socket.on("create", function(data) {
+	console.log("socket receive data from server.");
+	//process data
+	var linkedit = "/user/edit/"+data.id;
+    	var linkdelete = "/user/delete/"+data.id;
+
+    	console.log(linkedit);
+    	//$('<tr><td>ID: '+data.id+'</td><td id="'+data.email+'">'+val+'</td><tr>').appendTo('#registeredList')
+    	$('<tr><td>'+ data.id+ '</td><td>'+data.name+'</td><td>'+data.email+'</td><td><a href="'+linkedit+'">Edit</a></td><td><a href="'+linkdelete+'">Delete</a></td</tr>').appendTo('#registeredList');
+
+});
+document.getElementById("button").addEventListener("click", function(event){
+	console.log("clicked");
+    event.preventDefault();
+    var formData = {
+       name: document.getElementById('name').value,
+       password: document.getElementById('password').value,
+       email: document.getElementById('email').value
+    };
+    $.post('user-create', formData).done(function (data) {
+
+    });
+});
+</script>
+</html>
