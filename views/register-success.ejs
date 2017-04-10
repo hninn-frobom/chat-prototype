@@ -6,6 +6,7 @@
 	<script src="/js/dependencies/sails.io.js"></script>
 </head>
 <body>
+<td width="50px"><a href="/login">Login</a></td>
 <form action ="user-create" method ="post">
 <h3>User Register</h3>
 <table>
@@ -54,11 +55,10 @@ io.socket.on("create", function(data) {
 	console.log("socket receive data from server.");
 	//process data
 	var linkedit = "/user/edit/"+data.id;
-    	var linkdelete = "/user/delete/"+data.id;
+    var linkdelete = "/user/delete/"+data.id;
 
     	console.log(linkedit);
-    	//$('<tr><td>ID: '+data.id+'</td><td id="'+data.email+'">'+val+'</td><tr>').appendTo('#registeredList')
-    	$('<tr><td>'+ data.id+ '</td><td>'+data.name+'</td><td>'+data.email+'</td><td><a href="'+linkedit+'">Edit</a></td><td><a href="'+linkdelete+'">Delete</a></td</tr>').appendTo('#registeredList');
+    	$('<tr><td>'+ data.id+ '</td><td>'+data.name+'</td><td>'+data.email+'</td><td><a href="'+linkedit+'">Edit</a></td><td><a href="'+linkdelete+'">Delete</a></td></tr>').appendTo('#registeredList');
 
 });
 document.getElementById("button").addEventListener("click", function(event){

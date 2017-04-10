@@ -46,7 +46,22 @@ module.exports.routes = {
 
   'get /user/delete/:user_id': 'UserController.deleteUser',
   
-  'get /user-watch': 'UserController.joinSocket'
+  'get /user-watch': 'UserController.joinSocket',
+
+   'get /login': {
+    view: 'login'
+  },
+
+  'post /user-login': 'UserController.loginUser',
+
+  'post /message-create': 'UsermessagesController.createMessage',
+
+  'get /getMessages': 'UsermessagesController.getMessages',
+
+  'get /message-watch': 'UsermessagesController.joinSocket',
+
+  'get /message/delete/:usermessage_id': 'UsermessagesController.deleteMessage'
+
 
   /***************************************************************************
   *                                                                          *

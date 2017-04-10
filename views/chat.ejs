@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/js/dependencies/sails.io.js"></script>
+</head>
+<body>
+<table id="message">
+
+	<% for(var i=0; i < usermessages.length; i++) {
+		var usermessage = usermessages[i]; %>
+		<tr>
+			<td><%= usermessage.name %></td><td>:</td>
+			<td><%= usermessage.message %></td>
+			<td><a href="/message/delete/<%= usermessage.id %>">Delete</a></td>
+		</tr>
+	<% }  %>
+</table>
+
+<input name="message" type="text" id="txt" placeholder="Type Message" size="50">
+</body>
+
+
+<script type="text/javascript">
+io.socket.get("/message-watch", function(data) {
+
+});
+
+io.socket.on("createMessage", function(data) {
+	console.log("socket receive data of message from server.");
+	var linkdelete = "/user/delete/"+data.id;
+    $('<tr><td>'+data.name+'</td><td>:</td><td>'+data.message+'</td><td><a href="'+linkdelete+'">Delete</a></td></tr>').appendTo('#message');
+
+
+});
+
+
+
+document.querySelector('#txt').addEventListener('keypress', function (e) {
+    var key = e.which || e.keyCode;
+    var userName = "<%=req.session.userName%>";
+    
+    if (key === 13) {
+    	var formData = {
+    		name: userName,
+    		message: document.getElementById('txt').value,
+    	};
+    	$.post('message-create', formData).done(function (data) {
+
+    	});
+    }
+});
+</script>
+</html>
