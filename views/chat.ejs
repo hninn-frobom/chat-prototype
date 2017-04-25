@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/js/dependencies/sails.io.js"></script>
+	<link rel="stylesheet" href="../../styles/style.css" type="text/css">
+</head>
+<body>
+
+<div class="main">
+
+<div class="part1">Hello <%= req.session.user.name %></div>
+
+<div class="part2">
+    <div class="body1">
+       <table id="users">
+		<% for(var i=0; i < loginUsers.length; i++) {
+		var user = loginUsers[i]; 
+		if (user.name != req.session.user.name){ %>
+		<tr>
+			<td><a href="/user/directMessage/<%= user.name %>" id="sentUser"> <%= user.name%> </a></td>
+		</tr>
+		<%
+			}
+		 }  %>
+		</table>
+    </div>
+    <div class="body2">
+        <table id="message">
+
+		<% for(var i=0; i < usermessages.length; i++) {
+		var usermessage = usermessages[i]; %>
+		<tr>
+			<td><%= usermessage.name %></td><td>:</td>
+			<td><%= usermessage.message %></td>
+			<td><a href="/message/delete/<%= usermessage.id %>">Delete</a></td>
+		</tr>
+		<% }  %>
+		</table>
+    </div>
+
+</div>
+
+<div class="part3"><input name="message" type="text" id="txt" placeholder="Type Message" size="50"></div>
+
+</div>
+
+</body>
+
+
+<script type="text/javascript">
+io.socket.get("/message-watch", function(data) {
+
+});
+
+io.socket.on('getloginUsers', function(data){
+	var userLink = "/user/directMessage/"+data;
+	 $('<tr><td><a href="'+userLink+'">'+data+'</a></td></tr>').appendTo('#users');
+
+});
+
+
+
+io.socket.on("createMessage", function(data) {
+	console.log("socket receive data of message from server.");
+	var linkdelete = "/user/delete/"+data.id;
+    $('<tr><td>'+data.name+'</td><td>:</td><td>'+data.message+'</td><td><a href="'+linkdelete+'">Delete</a></td></tr>').appendTo('#message');
+
+
+});
+
+document.querySelector('#txt').addEventListener('keypress', function (e) {
+    var key = e.which || e.keyCode;
+    var userName = "<%=req.session.user.name%>";
+    
+    if (key === 13) {
+    	var formData = {
+    		name: userName,
+    		message: document.getElementById('txt').value,
+    	};
+    	$.post('message-create', formData).done(function (data) {
+
+    	});
+    }
+});
+/*document.querySelector('#txt').addEventListener('keypress', function (e) {
+    var key = e.which || e.keyCode;
+    var receiveUser = "<%=req.session.user.name%>";
+    
+    if (key === 13) {
+    	var formData = {
+    		sentUser: req.param('user_name'),
+    		receiveUser: receiveUser,
+    		message: document.getElementById('txt').value,
+    	};
+    	$.post('message-create', formData).done(function (data) {
+
+    	});
+    }
+});*/
+
+
+</script>
+</html>
