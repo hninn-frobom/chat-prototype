@@ -58,6 +58,8 @@ module.exports.routes = {
 
   'get /getMessages': 'UsermessagesController.getMessages',
 
+ // 'get /user/directMessage/:user_name': 'DirectMessageController.directMessage',
+
   'get /message-watch': 'UsermessagesController.joinSocket',
 
   'get /message/delete/:usermessage_id': 'UsermessagesController.deleteMessage'

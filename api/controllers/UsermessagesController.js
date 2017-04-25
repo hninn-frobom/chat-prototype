@@ -4,12 +4,12 @@
  * @description :: Server-side logic for managing usermessages
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-
+//var userContoller = require('./UserController');
 module.exports = {
 
 	createMessage: function(req, res){
 		var message = {
-          name: req.session.userName,
+          name: req.session.user.name,
 		  message: req.param('message')
 		};
 		Usermessages.create(message).exec(function(err, usermessages){
@@ -24,7 +24,9 @@ module.exports = {
 
 	getMessages: function(req, res){
 		Usermessages.find().exec(function(err, usermessages) {
-			res.view('chat', {layout: null, usermessages: usermessages});
+			//var users = userContoller.getLoginUsers();
+			var users = sails.controllers.user.getLoginUsers();
+			res.view('chat', {layout: null, usermessages: usermessages, loginUsers : users});
 		});
 	},
 
@@ -49,5 +51,8 @@ module.exports = {
 				res.redirect('/login');
 			}
 		});
-	}
+	},
+
+
+
 }

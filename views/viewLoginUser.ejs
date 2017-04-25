@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div.main {
+    position: relative;
+    left: 0px;
+    height: 560px;
+    width: 1150px;
+}
+
+div.part1 {
+    padding: 10px;
+    position: absolute;
+    top: 0px;
+    height: 30px;
+    width: 1150px;
+    background-color: #4372d0;
+}
+
+div.part2 {
+    position: absolute;
+    top: 30px;
+    height: 500px;
+    width: 1150px;
+}
+
+div.body1 {
+    padding: 10px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 500px;
+    width: 200px;
+    background-color: #0099CC;
+}
+
+div.body2 {
+    padding: 10px;
+    position: absolute;
+    top: 0px;
+    left: 200px;
+    width: 950px;
+    height: 500px;
+    background-color: #66CCFF;
+}
+
+
+div.part3 {
+    padding: 10px;
+    position: absolute;
+    top: 530px;
+    height: 30px;
+    width: 1150px;
+    background-color: #CCFFCC;
+}
+
+</style>
+</head>
+<body>
+
+<div class="main">
+
+<div class="part1">Header</div>
+
+<div class="part2">
+    <div class="body1">
+       <table id="message">
+		<% for(var i=0; i < loginUsers.length; i++) {
+		var user = loginUsers[i]; %>
+		<tr>
+			<td><%= user.name %></td><td>:</td>
+		</tr>
+		<% }  %>
+		</table>
+    </div>
+    <div class="body2">
+        Body 2
+    </div>
+
+</div>
+
+<div class="part3">footer</div>
+
+</div>
+
+
+</body>
+</html>
